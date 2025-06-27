@@ -31,6 +31,8 @@ def handle_events(screen, player):
         screen.blit(enemy.image, enemy.rect.topleft)
         if abs(player.rect.x - enemy.rect.x) < ENEMY_TRIGGER_DISTANCE:
             flicker_screen(screen)
+            enemy = None  # Reset enemy after scare
+
             
 def flicker_screen(screen):
     flicker = pygame.Surface(screen.get_size())
