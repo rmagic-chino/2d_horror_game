@@ -1,5 +1,5 @@
 import pygame
-from settings import ASSET_PATH, SCREEN_WIDTH, ROOM_TIME_LIMIT
+from settings import ASSET_PATH, SCREEN_WIDTH
 from events import maybe_trigger_event
 
 class RoomManager:
@@ -15,9 +15,8 @@ class RoomManager:
             player.rect.right = SCREEN_WIDTH
             
         self.time_in_room += 1
-        if self.time_in_room == 301:
+        if self.time_in_room == 301:  # Trigger only once
             maybe_trigger_event()
-
             
         if player.rect.right >= SCREEN_WIDTH:
             player.rect.right = 10
