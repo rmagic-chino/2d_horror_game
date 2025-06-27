@@ -10,7 +10,7 @@ from save_manager import save_game, load_game
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("dont open the door")
+pygame.display.set_caption("don't open the door")
 clock = pygame.time.Clock()
 
 player = Player()
@@ -31,17 +31,21 @@ while running:
                 "rooms_passed": room_manager.rooms_passed
             })
             running = False
-    
+
     keys = pygame.key.get_pressed()
     player.handle_input(keys)
     room_manager.update(player)
-    
+
+    # Draw room and player
     screen.blit(room_manager.get_current_room(), (0, 0))
     screen.blit(player.image, player.rect.topleft)
     render_flashlight(screen, player.rect.center)
-    pygame.display.update()
+
+    # ✅ Handle events like whisper, scream, shadow BEFORE display update
     handle_events(screen, player)
+
+    pygame.display.update()
     clock.tick(FPS)
-    
+
 pygame.quit()
 sys.exit()
