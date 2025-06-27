@@ -29,9 +29,9 @@ def handle_events(screen, player):
     if current_event == "enemy" and enemy:
         enemy.update(player)
         screen.blit(enemy.image, enemy.rect.topleft)
-        if abs(player.rect.x - enemy.rect.x) < ENEMY_TRIGGER_DISTANCE:
-            flicker_screen(screen)
-            enemy = None  # Reset enemy after scare
+    if abs(player.rect.x - enemy.rect.x) < ENEMY_TRIGGER_DISTANCE:
+        flicker_screen(screen)
+        enemy = None  # Reset enemy after scare
 
             
 def flicker_screen(screen):
