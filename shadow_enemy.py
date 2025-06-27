@@ -7,13 +7,14 @@ class ShadowEnemy(Enemy):
         try:
             self.image = pygame.image.load(ASSET_PATH + "shadow.png").convert_alpha()
         except pygame.error:
-            print("Warning: Missing shadow.png! Using placeholder.")
+            print("Warning: Missing shadow.png, using placeholder.")
             self.image = pygame.Surface((50, 50))
             self.image.fill((0, 0, 0))
         super().__init__(self.image, -100, 500)
-        
+
     def update(self, player):
+        speed = 3  # Faster ghost
         if self.rect.x < player.rect.x:
-            self.rect.x += 1
+            self.rect.x += speed
         elif self.rect.x > player.rect.x:
-            self.rect.x -= 1
+            self.rect.x -= speed
