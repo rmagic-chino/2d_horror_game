@@ -9,11 +9,20 @@ class RoomManager:
         self.room_timer = 0
         
     def update(self, player):
-        self.room_timer += 1
+        if player.rect.left < 0:
+            player.rect.left = 0
+        if player.rect.right > SCREEN_WIDTH:
+            player.rect.right = SCREEN_WIDTH
+            
+        self.time_in_room += 1
+        if self.time_in_room > 300:
+            maybe_trigger_event()
+            
         if player.rect.right >= SCREEN_WIDTH:
             player.rect.right = 10
             self.rooms_passed += 1
-            self.room_timer = 0
+            self.time_in_room = 0
             maybe_trigger_event()
             
-    
+    def get_current_room(self):
+        return self.room_image
