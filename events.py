@@ -25,18 +25,17 @@ def maybe_trigger_event():
         enemy = None
         
 def handle_events(screen, player):
-    global enemy
+    global enemy, current_event
     if current_event == "enemy" and enemy:
         enemy.update(player)
         screen.blit(enemy.image, enemy.rect.topleft)
-    if abs(player.rect.x - enemy.rect.x) < ENEMY_TRIGGER_DISTANCE:
-        flicker_screen(screen)
-        enemy = None  # Reset enemy after scare
-
+        if abs(player.rect.x - enemy.rect.x) < ENEMY_TRIGGER_DISTANCE:
+            flicker_screen(screen)
+            enemy = None  # Reset enemy after interaction
+            current_event = None
             
 def flicker_screen(screen):
     flicker = pygame.Surface(screen.get_size())
     flicker.fill((255, 255, 255))
     flicker.set_alpha(40)
     screen.blit(flicker, (0, 0))
-    
