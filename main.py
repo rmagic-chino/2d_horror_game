@@ -8,3 +8,8 @@ from sounds import init_sounds
 from events import handle_events
 from save_manager import save_game, load_game
 
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("dont open the door")
+clock = pygame.time.Clock()
+
