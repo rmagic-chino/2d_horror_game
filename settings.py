@@ -1,0 +1,8 @@
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+FPS = 60
+ASSET_PATH = "assets/"
+SHADOW_TRIGGER_TIME = 8
+SHADOW_FLICKER_RADIUS = 120
+
+# player settings, edit if you want.
