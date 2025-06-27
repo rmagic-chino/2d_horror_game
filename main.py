@@ -22,3 +22,14 @@ if saved:
     player.rect.x = saved['player_x']
     room_manager.rooms_passed = saved['rooms_passed']
 
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            save_game({
+                "player_x": player.rect.x,
+                "rooms_passed": room_manager.rooms_passed
+            })
+            running = False
+    
+    
