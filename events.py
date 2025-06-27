@@ -32,4 +32,9 @@ def handle_events(screen, player):
         if abs(player.rect.x - enemy.rect.x) < ENEMY_TRIGGER_DISTANCE:
             flicker_screen(screen)
             
+def flicker_screen(screen):
+    flicker = pygame.Surface(screen.get_size())
+    flicker.fill((255, 255, 255))
+    flicker.set_alpha(40)
+    screen.blit(flicker, (0, 0))
     
