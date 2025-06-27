@@ -32,4 +32,18 @@ while running:
             })
             running = False
     
+    keys = pygame.key.get_pressed()
+    player.handle_input(keys)
+    room_manager.update(player)
     
+    screen.blit(room_manager.get_current_room(), (0, 0))
+    screen.blit(player.image, player.rect.topleft)
+    
+    handle_events(screen, player)
+    render_flashlight(screen, player.rect.center)
+    
+    pygame.display.update()
+    clock.tick(FPS)
+    
+pygame.quit()
+sys.exit()
