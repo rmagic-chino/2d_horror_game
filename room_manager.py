@@ -6,7 +6,7 @@ class RoomManager:
     def __init__(self):
         self.room_image = pygame.image.load(ASSET_PATH + 'room.png')
         self.rooms_passed = 0
-        self.room_timer = 0
+        self.time_in_room = 0
         
     def update(self, player):
         if player.rect.left < 0:
