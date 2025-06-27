@@ -15,8 +15,9 @@ class RoomManager:
             player.rect.right = SCREEN_WIDTH
             
         self.time_in_room += 1
-        if self.time_in_room > 300:
+        if self.time_in_room == 301:
             maybe_trigger_event()
+
             
         if player.rect.right >= SCREEN_WIDTH:
             player.rect.right = 10
