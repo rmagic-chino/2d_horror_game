@@ -17,7 +17,7 @@ player = Player()
 room_manager = RoomManager()
 init_sounds()
 
-saved = load_game
+saved = load_game()
 if saved:
     player.rect.x = saved['player_x']
     room_manager.rooms_passed = saved['rooms_passed']
