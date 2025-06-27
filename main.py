@@ -38,11 +38,9 @@ while running:
     
     screen.blit(room_manager.get_current_room(), (0, 0))
     screen.blit(player.image, player.rect.topleft)
-    
-    handle_events(screen, player)
     render_flashlight(screen, player.rect.center)
-    
     pygame.display.update()
+    handle_events(screen, player)
     clock.tick(FPS)
     
 pygame.quit()
