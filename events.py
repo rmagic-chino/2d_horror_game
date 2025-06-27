@@ -27,11 +27,10 @@ def maybe_trigger_event():
     elif roll == 3:
         play_scream()
         current_event = "scream"
-        jumpscare_timer = 20  # show jumpscare for 20 frames
+        jumpscare_timer = 20
     else:
         current_event = None
-        enemy = None
-        jumpscare_timer = 0
+        # keep previous enemy if it exists (don't reset)
 
 def handle_events(screen, player):
     global enemy, current_event, jumpscare_timer
@@ -39,17 +38,16 @@ def handle_events(screen, player):
     if current_event == "enemy" and enemy:
         enemy.update(player)
         screen.blit(enemy.image, enemy.rect.topleft)
-
-        # Flicker repeatedly when close
         if abs(player.rect.x - enemy.rect.x) < ENEMY_TRIGGER_DISTANCE:
             flicker_screen(screen, intensity=60)
+            play_scream()
+            # Don't destroy enemy — let it follow continuously
 
     elif current_event == "whisper":
-        # Show a quick black translucent shape (like a phantom)
-        phantom = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
-        phantom.fill((0, 0, 0, 50))  # low-opacity black screen
+        phantom = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+        phantom.fill((0, 0, 0, 50))
         screen.blit(phantom, (0, 0))
-        current_event = None  # one-time effect
+        current_event = None
 
     elif current_event == "scream" and jumpscare_timer > 0:
         image = get_jumpscare_image()
