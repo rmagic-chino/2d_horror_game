@@ -13,3 +13,7 @@ def play_whisper():
     if whisper_sound:
         whisper_sound.play()
         
+def play_scream():
+    if scream_sound:
+        scream_sound.play()
+        
