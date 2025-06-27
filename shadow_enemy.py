@@ -7,4 +7,9 @@ class ShadowEnemy(Enemy):
         image = pygame.image.load(ASSET_PATH + "shadow.png")
         super().__init__(image, -100, 500)
         
-    
+    def update(self, player):
+        if self.rect.x < player.rect.x:
+            self.rect.x += 1
+        elif self.rect.x > player.rect.x:
+            self.rect.x -= 1
+            
