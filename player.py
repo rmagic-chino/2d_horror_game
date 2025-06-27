@@ -1,14 +1,16 @@
 import pygame
-from settings import ASSET_PATH, SCREEN_WIDTH, SCREEN_HEIGHT
+from settings import ASSET_PATH, SCREEN_WIDTH
+from game_object import GameObject
 
-class Player:
+class Player(GameObject):
     def __init__(self):
-        self.image = pygame.image.load(ASSET_PATH + "player.png")
-        self.rect = self.image.get_rect(midbottom=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50))
+        image = pygame.image.load(ASSET_PATH + "player.png")
+        super().__init__(image, 400, 550)
         self.speed = 5
         
-    def handle_input(self, keys):
+    def handle_input(self):
         if keys[pygame.K_LEFT]:
             self.rect.x = max(0, self.rect.x - self.speed)
         if keys[pygame.K_RIGHT]:
             self.rect.x = min(SCREEN_WIDTH - self.rect.width, self.rect.x + self.speed)
+            
