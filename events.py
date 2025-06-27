@@ -4,7 +4,7 @@ from settings import ASSET_PATH, ENEMY_TRIGGER_DISTANCE
 from sounds import play_whisper, play_scream
 from shadow_enemy import ShadowEnemy
 
-jumpscare_img = pygame.image.load(ASSET_PATH + 'jumpscare.png')
+jumpscare_img = pygame.image.load(ASSET_PATH + 'jumpscare.png').convert_alpha()
 current_event = None
 enemy = None
 
