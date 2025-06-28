@@ -3,42 +3,37 @@ import random
 from settings import ASSET_PATH
 from sounds import play_whisper, play_scream
 
-shadow_img = pygame.image.load(ASSET_PATH + "shadow.png").convert_alpha()
-jumpscare_img = pygame.image.load(ASSET_PATH + "jumpscare.png").convert()
+shadow_img = None
+jumpscare_img = None
 current_event = None
-jumpscare_triggered = False
+
+def load_event_assets():
+    global shadow_img, jumpscare_img
+    shadow_img = pygame.image.load(ASSET_PATH + "shadow.png").convert_alpha()
+    jumpscare_img = pygame.image.load(ASSET_PATH + "jumpscare.png").convert_alpha()
 
 def maybe_trigger_event():
     global current_event
-    roll = random.randint(1, 4)
+    roll = random.randint(1, 10)
     if roll == 1:
+        play_whisper()
         current_event = "whisper"
     elif roll == 2:
         current_event = "shadow"
+    elif roll == 3:
+        current_event = "jumpscare"
     else:
         current_event = None
 
 def handle_events(screen, player, enemy):
-    global jumpscare_triggered
-
-    if current_event == "whisper":
-        play_whisper()
-
-    if current_event == "shadow":
-        if on_screen(enemy):
+    global current_event
+    if current_event == "jumpscare" and player.rect.colliderect(enemy.rect):
+        play_scream()
+        screen.blit(jumpscare_img, (0, 0))
+        pygame.display.update()
+        pygame.time.delay(1500)
+        player.health -= 1
+        current_event = None
+    elif current_event == "shadow":
+        if screen.get_rect().colliderect(enemy.rect):
             play_whisper()
-
-        if enemy.rect.colliderect(player.rect):
-            jumpscare_triggered = True
-            screen.blit(jumpscare_img, (0, 0))
-            pygame.display.update()
-            pygame.time.delay(2000)
-            player.health = 0
-
-        elif enemy.rect.colliderect(player.rect.inflate(20, 20)):
-            distance = abs(enemy.rect.centerx - player.rect.centerx) + abs(enemy.rect.centery - player.rect.centery)
-            if distance <= 10:
-                play_scream()
-
-def on_screen(enemy):
-    return 0 <= enemy.rect.x <= 800 and 0 <= enemy.rect.y <= 600
