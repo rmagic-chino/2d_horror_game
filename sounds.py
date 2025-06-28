@@ -10,6 +10,9 @@ def init_sounds():
     whisper_sound = pygame.mixer.Sound(ASSET_PATH + "whisper.wav")
     scream_sound = pygame.mixer.Sound(ASSET_PATH + "scream.wav")
 
+    whisper_sound.set_volume(1.0)
+    scream_sound.set_volume(1.0)
+
 def play_whisper():
     if whisper_sound:
         whisper_sound.play()
