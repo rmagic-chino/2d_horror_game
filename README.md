@@ -16,3 +16,9 @@ pip install pillow
 
 
 py 3.11.9
+
+
+# or paste this in powershell to download all
+
+python -m pip install --upgrade pip
+pip install pygame pillow pyinstaller
