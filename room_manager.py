@@ -5,13 +5,12 @@ from events import maybe_trigger_event
 
 class RoomManager:
     def __init__(self):
-        self.room_image = pygame.image.load(ASSET_PATH + "room.png").convert()
+        self.room_image = pygame.image.load(ASSET_PATH + "room.png")
         self.rooms_passed = 0
         self.exit_side = random.choice(['left', 'right', 'up', 'down'])
 
     def update(self, player):
         room_changed = False
-
         if player.rect.left <= 0 and self.exit_side == 'left':
             room_changed = True
         elif player.rect.right >= SCREEN_WIDTH and self.exit_side == 'right':
@@ -24,11 +23,19 @@ class RoomManager:
         if room_changed:
             self.rooms_passed += 1
             if self.rooms_passed < 20:
-                maybe_trigger_event()
+                maybe_trigger_event(self.rooms_passed)
                 self.exit_side = random.choice(['left', 'right', 'up', 'down'])
-                player.reset_position(self.exit_side)
-            else:
-                player.health = 999  # to force win condition
+                self.reset_player(player)
 
     def get_current_room(self):
         return self.room_image
+
+    def reset_player(self, player):
+        if self.exit_side == 'left':
+            player.rect.right = SCREEN_WIDTH - 10
+        elif self.exit_side == 'right':
+            player.rect.left = 10
+        elif self.exit_side == 'up':
+            player.rect.bottom = SCREEN_HEIGHT - 10
+        elif self.exit_side == 'down':
+            player.rect.top = 10
