@@ -1,5 +1,3 @@
-# player.py
-
 import pygame
 from settings import ASSET_PATH, SCREEN_WIDTH, SCREEN_HEIGHT
 

@@ -41,7 +41,7 @@ while running:
     screen.blit(player.image, player.rect.topleft)
     render_flashlight(screen, player.rect.center)
 
-    # ✅ Handle events like whisper, scream, shadow BEFORE display update
+    #  Handle events like whisper, scream, shadow BEFORE display update
     handle_events(screen, player)
 
     pygame.display.update()
