@@ -2,8 +2,5 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 FPS = 60
 ASSET_PATH = "assets/"
-
-ROOM_TIME_LIMIT = 600
-ENEMY_TRIGGER_DISTANCE = 100
-
-# player settings, edit if you want.
+MAX_HEALTH = 3
+ROOM_LIMIT = 20
