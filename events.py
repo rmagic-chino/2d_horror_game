@@ -24,4 +24,4 @@ def draw_event(screen):
     if current_event == "jumpscare":
         screen.blit(jumpscare_img, (0, 0))
         pygame.display.update()
-        pygame.time.delay(1500)  # Pause for 1.5 seconds
+        pygame.time.delay(1500)

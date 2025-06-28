@@ -3,46 +3,35 @@ import sys
 from settings import *
 from player import Player
 from room_manager import RoomManager
-from flashlight import render_flashlight
 from sounds import init_sounds
-from events import handle_events
-from save_manager import save_game, load_game
+from events import draw_event
+from flashlight import render_flashlight
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("don't open the door")
+pygame.display.set_caption("Don't Open the Door")
 clock = pygame.time.Clock()
 
 player = Player()
 room_manager = RoomManager()
 init_sounds()
 
-saved = load_game()
-if saved:
-    player.rect.x = saved['player_x']
-    room_manager.rooms_passed = saved['rooms_passed']
-
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            save_game({
-                "player_x": player.rect.x,
-                "rooms_passed": room_manager.rooms_passed
-            })
             running = False
 
     keys = pygame.key.get_pressed()
     player.handle_input(keys)
+
     room_manager.update(player)
 
-    # Draw room and player
+    # Render
     screen.blit(room_manager.get_current_room(), (0, 0))
     screen.blit(player.image, player.rect.topleft)
     render_flashlight(screen, player.rect.center)
-
-    # Handle events like whisper, scream, shadow BEFORE display update
-    handle_events(screen, player)
+    draw_event(screen)
 
     pygame.display.update()
     clock.tick(FPS)
