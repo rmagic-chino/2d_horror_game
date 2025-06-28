@@ -1,6 +1,6 @@
 import pygame
 import random
-from settings import ASSET_PATH, SCREEN_WIDTH, SCREEN_HEIGHT, ROOM_LIMIT
+from settings import ASSET_PATH, SCREEN_WIDTH, SCREEN_HEIGHT
 from events import maybe_trigger_event
 
 class RoomManager:
@@ -23,13 +23,12 @@ class RoomManager:
 
         if room_changed:
             self.rooms_passed += 1
-            if self.rooms_passed < ROOM_LIMIT:
+            if self.rooms_passed < 20:
                 maybe_trigger_event()
                 self.exit_side = random.choice(['left', 'right', 'up', 'down'])
                 player.reset_position(self.exit_side)
             else:
-                return "end"
-        return None
+                player.health = 999  # to force win condition
 
     def get_current_room(self):
         return self.room_image
