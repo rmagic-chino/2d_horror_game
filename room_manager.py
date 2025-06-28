@@ -1,36 +1,39 @@
 import pygame
 import random
-from settings import ASSET_PATH, SCREEN_WIDTH
+from settings import ASSET_PATH, SCREEN_WIDTH, SCREEN_HEIGHT
 from events import maybe_trigger_event
 
 class RoomManager:
     def __init__(self):
-        self.room_image = pygame.image.load(ASSET_PATH + 'room.png')
+        self.room_image = pygame.image.load(ASSET_PATH + "room.png")
         self.rooms_passed = 0
-        self.time_in_room = 0
-        self.exit_side = random.choice(["left", "right"])
+        self.exit_side = random.choice(['left', 'right', 'up', 'down'])
 
     def update(self, player):
-        if player.rect.left < 0:
-            player.rect.left = 0
-        if player.rect.right > SCREEN_WIDTH:
-            player.rect.right = SCREEN_WIDTH
+        room_changed = False
 
-        self.time_in_room += 1
-        if self.time_in_room == 301:
-            maybe_trigger_event()
+        if player.rect.left <= 0 and self.exit_side == 'left':
+            room_changed = True
+        elif player.rect.right >= SCREEN_WIDTH and self.exit_side == 'right':
+            room_changed = True
+        elif player.rect.top <= 0 and self.exit_side == 'up':
+            room_changed = True
+        elif player.rect.bottom >= SCREEN_HEIGHT and self.exit_side == 'down':
+            room_changed = True
 
-        if (self.exit_side == "right" and player.rect.right >= SCREEN_WIDTH) or \
-           (self.exit_side == "left" and player.rect.left <= 0):
+        if room_changed:
             self.rooms_passed += 1
-            self.time_in_room = 0
-            self.exit_side = random.choice(["left", "right"])
-            # reposition player to opposite side of new room
-            if self.exit_side == "right":
-                player.rect.left = 10
+            if self.rooms_passed < 20:
+                maybe_trigger_event()
+                self.exit_side = random.choice(['left', 'right', 'up', 'down'])
+                player.reset_position(self.exit_side)
             else:
-                player.rect.right = SCREEN_WIDTH - 10
-            maybe_trigger_event()
+                self.end_game()
+
+    def end_game(self):
+        pygame.quit()
+        print("You survived all 20 rooms!")
+        exit()
 
     def get_current_room(self):
         return self.room_image
