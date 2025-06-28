@@ -1,5 +1,5 @@
 import pygame
-from settings import ASSET_PATH
+from settings import ASSET_PATH, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Player:
     def __init__(self):
@@ -17,12 +17,15 @@ class Player:
         if keys[pygame.K_DOWN]:
             self.rect.y += self.speed
 
-        # Keep the player on screen
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > 800:
-            self.rect.right = 800
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > 600:
-            self.rect.bottom = 600
+        # Keep on screen
+        self.rect.clamp_ip(pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    def reset_position(self, exit_direction):
+        if exit_direction == 'left':
+            self.rect.right = SCREEN_WIDTH - 10
+        elif exit_direction == 'right':
+            self.rect.left = 10
+        elif exit_direction == 'up':
+            self.rect.bottom = SCREEN_HEIGHT - 10
+        elif exit_direction == 'down':
+            self.rect.top = 10
