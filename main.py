@@ -2,50 +2,72 @@ import pygame
 import sys
 from settings import *
 from player import Player
+from shadow_enemy import ShadowEnemy
 from room_manager import RoomManager
-from flashlight import render_flashlight
+from ui import draw_hearts, draw_end_message
 from sounds import init_sounds
 from events import handle_events
-from save_manager import save_game, load_game
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("don't open the door")
+pygame.display.set_caption("Don't Open the Door")
 clock = pygame.time.Clock()
 
-player = Player()
-room_manager = RoomManager()
-init_sounds()
+def game_loop():
+    player = Player()
+    enemy = ShadowEnemy()
+    room_manager = RoomManager()
+    init_sounds()
 
-saved = load_game()
-if saved:
-    player.rect.x = saved['player_x']
-    room_manager.rooms_passed = saved['rooms_passed']
+    running = True
+    game_over = False
+    escaped = False
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            save_game({
-                "player_x": player.rect.x,
-                "rooms_passed": room_manager.rooms_passed
-            })
-            running = False
+    while running:
+        screen.fill((0, 0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-    keys = pygame.key.get_pressed()
-    player.handle_input(keys)
-    room_manager.update(player)
+        if not game_over and not escaped:
+            keys = pygame.key.get_pressed()
+            player.handle_input(keys)
+            enemy.update(player)
 
-    # Draw room and player
-    screen.blit(room_manager.get_current_room(), (0, 0))
-    screen.blit(player.image, player.rect.topleft)
-    render_flashlight(screen, player.rect.center)
+            result = room_manager.update(player)
+            if result == "end":
+                escaped = True
 
-    #  Handle events like whisper, scream, shadow BEFORE display update
-    handle_events(screen, player)
+            screen.blit(room_manager.get_current_room(), (0, 0))
+            screen.blit(player.image, player.rect)
+            screen.blit(enemy.image, enemy.rect)
 
-    pygame.display.update()
-    clock.tick(FPS)
+            handle_events(screen, player, enemy)
+            draw_hearts(screen, player.health)
 
-pygame.quit()
-sys.exit()
+            if player.health <= 0:
+                game_over = True
+
+        elif game_over:
+            draw_end_message(screen, "You Died")
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_r]:
+                return game_loop()
+            elif keys[pygame.K_ESCAPE]:
+                pygame.quit()
+                sys.exit()
+
+        elif escaped:
+            draw_end_message(screen, "You Escaped!")
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_r]:
+                return game_loop()
+            elif keys[pygame.K_ESCAPE]:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()
+        clock.tick(FPS)
+
+game_loop()
